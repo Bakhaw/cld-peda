@@ -1,0 +1,14 @@
+@import './variables';
+@import '../components/AdminInterface/styles';
+@import '../components/CreateInvitation/styles';
+@import '../components/Invitations/styles';
+@import '../components/UserInterface/styles';
+
+
+body {
+  padding: 0;
+  margin: 0;
+  a {
+    text-decoration: none;
+  }
+}

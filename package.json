@@ -1,0 +1,26 @@
+{
+  "name": "calendar-back",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "engines": {
+    "node": "9.11.2"
+  },
+  "scripts": {
+    "heroku-postbuild": "cd client && yarn install --only=dev && yarn install && yarn run build",
+    "start": "nodemon server.js --exec babel-node --presets env",
+    "import": "mongo < scripts/create_events.js",
+    "drop": "mongo < scripts/drop.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.16.4",
+    "moment": "^2.22.2",
+    "mongoose": "^5.3.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "nodemon": "^1.18.4"
+  }
+}
