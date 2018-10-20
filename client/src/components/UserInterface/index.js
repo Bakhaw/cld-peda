@@ -80,7 +80,7 @@ class UserInterface extends Component {
                                 Valider
                             </Button>
 
-                            <Link to='/calendar' className='show-calendar'>
+                            <Link to='/calendrier' className='show-calendar'>
                                 <Button size='large' variant='outlined' color='primary'>
                                     Voir le Calendrier
                                 </Button>

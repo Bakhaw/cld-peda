@@ -11,7 +11,7 @@ class Router extends Component {
             <div>
                 <BrowserRouter>
                     <Switch>
-                        <Route path='/calendar' component={Calendar} />
+                        <Route path='/calendrier' component={Calendar} />
                         <Route path='/admin' component={AdminInterface} />
                         <Route path='/' component={UserInterface} />
                     </Switch>

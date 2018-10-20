@@ -26,15 +26,8 @@ class Invitation extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-
     await this.filterDates(this.state.selectedDates);
     this.addNewDatesInCalendar();
-
-    //   .then(res => {
-    //     console.log(res);
-    //     this.props.history.push('/calendar')
-    //   })
-    //   .catch(err => console.log(err))
   }
 
   addNewDatesInCalendar = async () => {
@@ -51,7 +44,7 @@ class Invitation extends Component {
     })
       .then(res => {
         this.toggleCheckedDates();
-        this.props.history.push('/calendar')
+        this.props.history.push('/calendrier')
       })
       .catch(err => console.log(err));
 
@@ -79,19 +72,20 @@ class Invitation extends Component {
     this.setState({ invitations })
   }
 
-  selectDate = async (item) => {
-    await this.setState(prevState => {
-      let newState = Object.assign({}, prevState);
-      let i = prevState.selectedDates.find(n => n._id === item._id);
-      if (i) {
-        newState.selectedDates = newState.selectedDates.filter(n => n._id !== i._id);
-        newState.selectedDatesIds = newState.selectedDatesIds.filter(n => n !== i._id);
-      } else {
-        newState.selectedDates.push(item);
-        newState.selectedDatesIds.push(item._id);
-      }
-      return newState;
-    });
+  selectDate = (item) => {
+    this.setState({ selectedDates: [item], selectedDatesIds: [item._id] })
+    // await this.setState(prevState => {
+    //   let newState = Object.assign({}, prevState);
+    //   let i = prevState.selectedDates.find(n => n._id === item._id);
+    //   if (i) {
+    //     newState.selectedDates = newState.selectedDates.filter(n => n._id !== i._id);
+    //     newState.selectedDatesIds = newState.selectedDatesIds.filter(n => n !== i._id);
+    //   } else {
+    //     newState.selectedDates.push(item);
+    //     newState.selectedDatesIds.push(item._id);
+    //   }
+    //   return newState;
+    // });
   }
 
   removeItem = async (id) => {
@@ -120,7 +114,6 @@ class Invitation extends Component {
   }
 
   render() {
-    const { endDates, startDates } = this.state;
     return (
       <div>
         {this.props.isAdmin &&
