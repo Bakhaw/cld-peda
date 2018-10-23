@@ -17,7 +17,12 @@ router.get('/:invitationId', (req, res) => {
   const query = { invitationId: req.params.invitationId };
   CalendarCard.find(query, (err, cards) => {
     if (err) return console.log(err);
-    console.log('Cards trouvées')
+
+    // ? On trie les dates dans l'ordre
+    cards.sort((left, right) => {
+      return moment(left.start, 'MM/DD/YYYY').diff(moment(right.start, 'MM/DD/YYYY'))
+    })
+
     res.json(cards)
   })
 })
@@ -37,7 +42,6 @@ router.post('/add', (req, res) => {
   // }
 
   try {
-    console.log('HEREEE', req.body);
     startDates.map((d, i) => {
       const newCalendarCard = new CalendarCard({
         start: moment(d, 'MM/DD/YYYY').format('MM/DD/YYYY'),

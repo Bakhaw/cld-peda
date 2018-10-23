@@ -41,20 +41,22 @@ class EventInfosModal extends Component {
           aria-labelledby='form-dialog-title'
         >
           <DialogTitle id='form-dialog-title' className='modal-calendar-title'>{selectedCardTitle}</DialogTitle>
-          <DialogContent>
-            {loading && <div className='modal-loading-container'><CircularProgress/></div>}
+          <DialogContent className='event-infos-modal-content'>
+            {loading && <div className='modal-loading-container'><CircularProgress /></div>}
 
             {!loading && selectedCards.map((d, i) => {
               return (
-                <div key={i}>
-                  <h3>Date {i + 1}</h3>
+                <div key={i} className='date-card'>
+                  <h2>Bilan n°{i + 1}</h2>
                   <Typography variant='subheading' className='modal-calendar-date'>
                     {moment(d.start, 'MM/DD/YYYY').locale('fr').format('D MMMM YYYY')}
                   </Typography>
-                  <Typography variant='subheading' className='modal-calendar-date'>
-                    {/* on avait ajouté 1j dans le back pour que le front affiche le jour en entier */}
-                    {moment(d.end, 'MM/DD/YYYY').subtract('1', 'day').locale('fr').format('D MMMM YYYY')}
-                  </Typography>
+                  {moment(d.start, 'MM/DD/YYYY').locale('fr').format('D MMMM YYYY') !== moment(d.end, 'MM/DD/YYYY').subtract('1', 'day').locale('fr').format('D MMMM YYYY') &&
+                    <Typography variant='subheading' className='modal-calendar-date'>
+                      {/* on avait ajouté 1j dans le back pour que le front affiche le jour en entier */}
+                      {moment(d.end, 'MM/DD/YYYY').subtract('1', 'day').locale('fr').format('D MMMM YYYY')}
+                    </Typography>
+                  }
                 </div>
               )
             })}
@@ -70,10 +72,10 @@ class EventInfosModal extends Component {
         </Dialog>
 
         <AlertModal closeAlertModal={this.closeAlertModal}
-                closeCalendarModal={this.props.closeCalendarModal}
-                getAllCalendarCards={this.props.getAllCalendarCards}
-                isAlertModalOpen={this.state.isAlertModalOpen}
-                selectedCards={this.props.selectedCards}/>
+          closeCalendarModal={this.props.closeCalendarModal}
+          getAllCalendarCards={this.props.getAllCalendarCards}
+          isAlertModalOpen={this.state.isAlertModalOpen}
+          selectedCards={this.props.selectedCards} />
       </div>
     );
   }
