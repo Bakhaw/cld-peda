@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import moment from 'moment';
 
 import Button from '@material-ui/core/Button';
@@ -7,37 +6,26 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
-class CalendarModal extends Component {
+import AlertModal from './AlertModal';
+
+class EventInfosModal extends Component {
 
   state = {
-    inputValue: '',
-  }
-
-  handleInputChange = (e) => {
-    this.setState({ inputValue: e.target.value });
-  }
-
-  removeUserFromEvent = () => {
-    console.log('Remove user from event')
-    axios.get(`/calendar/delete/${this.props.selectedCards[0].invitationId}`)
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
-
-    this.toggleEventCheckToFalse();
-  }
-
-  toggleEventCheckToFalse = () => {
-    console.log('Toggle event check to false')
-    axios.get(`/invitations/toggleEventCheckToFalse/${this.props.selectedCards[0].invitationId}`)
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+    isAlertModalOpen: false
   }
 
   newCalendarDate = date => {
     return moment(date, 'MM/DD/YYYY').locale('fr').format('D MMMM YYYY')
+  }
+
+  showAlertModal = () => {
+    this.setState({ isAlertModalOpen: true });
+  }
+
+  closeAlertModal = () => {
+    this.setState({ isAlertModalOpen: false });
   }
 
   render() {
@@ -63,23 +51,29 @@ class CalendarModal extends Component {
                   <Typography variant='subheading' className='modal-calendar-date'>
                     {/* on avait ajouté 1j dans le back pour que le front affiche le jour en entier */}
                     {moment(d.end, 'MM/DD/YYYY').subtract('1', 'day').locale('fr').format('D MMMM YYYY')}
-                    </Typography>
+                  </Typography>
                 </div>
               )
             })}
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.props.closeCalendarModal} color='secondary' variant='outlined'>
-              Annuler
+            <Button onClick={this.props.closeCalendarModal} color='secondary' variant='text'>
+              Fermer
           </Button>
-            <Button onClick={() => this.removeUserFromEvent()} color='primary' variant='contained'>
+            <Button onClick={this.showAlertModal} color='primary' variant='contained'>
               Me retirer de cet évènement
-          </Button>
+            </Button>
           </DialogActions>
         </Dialog>
+
+        <AlertModal closeAlertModal={this.closeAlertModal}
+                closeCalendarModal={this.props.closeCalendarModal}
+                getAllCalendarCards={this.props.getAllCalendarCards}
+                isAlertModalOpen={this.state.isAlertModalOpen}
+                selectedCards={this.props.selectedCards}/>
       </div>
     );
   }
 }
 
-export default CalendarModal;
+export default EventInfosModal;

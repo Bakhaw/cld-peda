@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import moment from 'moment';
 import BigCalendar from 'react-big-calendar';
-import CalendarModal from './CalendarModal';
+import CalendarModal from './EventInfosModal';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
@@ -32,6 +32,7 @@ class Calendar extends Component {
     }
 
     getAllCalendarCards = async () => {
+        console.log('getAllCalendarCards')
         const request = await axios.get('/calendar');
         const calendarCards = await request.data;
 
@@ -50,6 +51,7 @@ class Calendar extends Component {
     }
 
     closeCalendarModal = () => {
+        console.log('closeCalendarModal')
         this.setState({ isCalendarModalOpen: false })        
     }
 
@@ -75,6 +77,7 @@ class Calendar extends Component {
                     {isCalendarModalOpen &&
                         <CalendarModal isCalendarModalOpen={isCalendarModalOpen}
                                     closeCalendarModal={this.closeCalendarModal}
+                                    getAllCalendarCards={this.getAllCalendarCards}
                                     selectedCardTitle={selectedCardTitle}
                                     selectedCards={selectedCards}/>
                     }

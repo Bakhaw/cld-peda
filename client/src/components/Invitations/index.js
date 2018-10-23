@@ -110,7 +110,6 @@ class Invitation extends Component {
   render() {
     const { isAdmin } = this.props;
     const { invitations, invitationDates, selectedDatesId } = this.state;
-    console.log(this.state.loading)
     if (this.state.loading) return <div className='loading-container'><CircularProgress /></div>
     else return (
       <div>
