@@ -45,6 +45,10 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
+    proxy: [{
+      path: ['/invitations', '/calendar'],
+      target: 'http://localhost:8090',
+    }]
   },
   plugins: [
     new HtmlWebPackPlugin({

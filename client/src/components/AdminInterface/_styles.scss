@@ -1,9 +1,11 @@
 .admin-container {
   text-align: center;
+  width: $invitationsInterfaceWidth;
+  margin: auto;
 }
 
 .login {
-  width: $invitationsInterfaceWidth;
+  width: 50%;
   margin: auto;
   display: flex;
   flex-direction: column;

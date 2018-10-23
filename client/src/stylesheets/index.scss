@@ -1,9 +1,11 @@
+@import './responsive';
 @import './variables';
 @import '../components/AdminInterface/styles';
+@import '../components/Calendar/styles';
 @import '../components/CreateInvitation/styles';
 @import '../components/Invitations/styles';
 @import '../components/UserInterface/styles';
-
+@import '../components/Navbar/styles';
 
 body {
   padding: 0;
@@ -14,5 +16,7 @@ body {
 }
 
 .rbc-calendar {
-  height: 100vh !important;
+  margin-top: 20px;
+  min-height: calc(90vh - 20px) !important; // ? 20px = margintop, 10vh = Navbar
+  height: 100%;
 }

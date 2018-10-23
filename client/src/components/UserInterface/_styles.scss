@@ -1,8 +1,17 @@
 .user-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    width: $invitationsInterfaceWidth;
+    margin: auto;
+    min-height: 90vh; // 10vh Navbar
+    @include xs {
+        width: 100%;
+    }
+    @include sm {
+        width: 100%;
+    }
 }
 
 .user-interface {
@@ -10,8 +19,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    width: $invitationsInterfaceWidth;
-    min-height: 50vh;
+    width: 100%;
+    height: 100%;
     .choose-date {
         display: flex;
         flex-direction: column;

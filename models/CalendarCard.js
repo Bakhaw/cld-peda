@@ -5,7 +5,7 @@ const CalendarCardSchema = new mongoose.Schema({
     start: String,
     end: String,
     allDay: Boolean,
-    invitationId: String
+    invitationId: mongoose.Schema.Types.ObjectId
 })
 
 export default mongoose.model('CalendarCard', CalendarCardSchema, 'calendar_cards');

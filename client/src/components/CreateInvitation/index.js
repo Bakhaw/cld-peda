@@ -55,7 +55,7 @@ class CreateInvitation extends Component {
             variant='outlined'
           />
 
-          <Button type='submit' size='large' variant='contained' color='primary'>
+          <Button type='submit' size='large' variant='extendedFab' color='primary'>
             Valider
           </Button>
         </form>

@@ -8,7 +8,6 @@ import Invitations from '../Invitations';
 class AdminInterface extends Component {
 
   state = {
-    invitations: [],
     key: key,
     inputValue: '',
     showAdminInterface: false,
@@ -31,28 +30,30 @@ class AdminInterface extends Component {
 
 
   render() {
+    const { errorPass, showAdminInterface } = this.state;
     return (
       <div className='admin-container'>
-        {!this.state.showAdminInterface &&
+        {!showAdminInterface &&
           <div className='login'>
             <h1>Bienvenue</h1>
             <TextField className='login-input'
-              error={this.state.errorPass}
-              helperText={this.state.errorPass ? 'Mot de passe invalide' : ''}
+              error={errorPass}
+              helperText={errorPass ? 'Mot de passe invalide' : '* Champ requis'}
               variant='outlined'
               margin='normal'
               label='Mot de passe'
+              required
               type='password'
               onChange={this.handleInputChange} />
-            <Button variant='contained' color='primary' size='large' onClick={this.checkPass}>
+            <Button variant='extendedFab' color='primary' size='large' onClick={this.checkPass}>
               Valider
             </Button>
           </div>
         }
 
-        {this.state.showAdminInterface &&
+        {showAdminInterface &&
           <div className='admin-create-invitations'>
-            <Invitations isAdmin={this.props.location.pathname === '/admin'}/>
+            <Invitations isAdmin/>
           </div>
         }
       </div>

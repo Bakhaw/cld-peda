@@ -20,6 +20,5 @@
     "moment": "^2.22.2",
     "mongoose": "^5.3.4",
     "nodemon": "^1.18.4"
-  },
-  "devDependencies": {}
+  }
 }

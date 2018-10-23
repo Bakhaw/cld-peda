@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import moment from 'moment';
+
 import Button from '@material-ui/core/Button';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -12,16 +15,21 @@ import Modal from '../Modal';
 
 class Invitation extends Component {
   state = {
+    loading: false,
     startDates: [],
     endDates: [],
     invitations: [],
-    selectedDatesIds: [],
+    invitationDates: [],
     selectedDates: [],
+    selectedDatesId: '',
     showDialog: false
   }
 
-  componentDidMount() {
-    this.getInvitations();
+  async componentDidMount() {
+    await this.setState({ loading: true });
+    await this.getOnlyInvitationsDates();
+    await this.getInvitations();
+    await this.setState({ loading: false });
   }
 
   handleSubmit = async (e) => {
@@ -35,7 +43,7 @@ class Invitation extends Component {
     params.append('startDates', this.state.startDates);
     params.append('endDates', this.state.endDates);
     params.append('title', this.props.title);
-    // params.append('invitationId')
+    params.append('invitationId', this.state.selectedDatesId)
 
     axios({
       method: 'post',
@@ -43,25 +51,16 @@ class Invitation extends Component {
       data: params
     })
       .then(res => {
-        this.toggleCheckedDates();
+        this.toggleEventCheckToTrue();
         this.props.history.push('/calendrier')
       })
       .catch(err => console.log(err));
 
   }
 
-  toggleCheckedDates = () => {
-    console.log('selectedDatesIds', this.state.selectedDatesIds)
-
-    const params = new URLSearchParams();
-    params.append('selectedDatesIds', this.state.selectedDatesIds);
-
-    axios({
-      method: 'post',
-      url: '/invitations/toggleCheckedDates',
-      data: params
-    })
-      .then(res => console.log(res.data))
+  toggleEventCheckToTrue = () => {
+    axios.get(`/invitations/toggleEventCheckToTrue/${this.state.selectedDatesId}`)
+      .then(res => console.log(res))
       .catch(err => console.log(err))
   }
 
@@ -72,20 +71,15 @@ class Invitation extends Component {
     this.setState({ invitations })
   }
 
+  getOnlyInvitationsDates = async () => {
+    const request = await axios.get('/invitations/availables/dates');
+    const invitationDates = await request.data;
+
+    this.setState({ invitationDates });
+  }
+
   selectDate = (item) => {
-    this.setState({ selectedDates: [item], selectedDatesIds: [item._id] })
-    // await this.setState(prevState => {
-    //   let newState = Object.assign({}, prevState);
-    //   let i = prevState.selectedDates.find(n => n._id === item._id);
-    //   if (i) {
-    //     newState.selectedDates = newState.selectedDates.filter(n => n._id !== i._id);
-    //     newState.selectedDatesIds = newState.selectedDatesIds.filter(n => n !== i._id);
-    //   } else {
-    //     newState.selectedDates.push(item);
-    //     newState.selectedDatesIds.push(item._id);
-    //   }
-    //   return newState;
-    // });
+    this.setState({ selectedDates: [item], selectedDatesId: item._id })
   }
 
   removeItem = async (id) => {
@@ -114,45 +108,60 @@ class Invitation extends Component {
   }
 
   render() {
-    return (
+    const { isAdmin } = this.props;
+    const { invitations, invitationDates, selectedDatesId } = this.state;
+    console.log(this.state.loading)
+    if (this.state.loading) return <div className='loading-container'><CircularProgress /></div>
+    else return (
       <div>
-        {this.props.isAdmin &&
+        {isAdmin &&
           <CreateInvitation getInvitations={this.getInvitations} />
         }
 
-        {this.state.invitations.length === 0
-          ? <p>Il n'y à plus d'invitations disponibles</p>
+        {invitations.length === 0
+          ? <p>Il n'y à pas d'invitations disponibles</p>
           : <List component='nav'>
-            {this.state.invitations.map((d, i) => {
+            {invitations.map((d, i) => {
+              const dates = invitationDates[i].dates;
+
               return (
                 <ListItem button
                   key={i}
                   onClick={() => this.selectDate(d)}
-                  selected={this.state.selectedDatesIds.includes(d._id)}>
+                  selected={selectedDatesId === d._id}>
                   <ListItemIcon>
                     <CalendarIcon />
                   </ListItemIcon>
-                  <ListItemText inset primary={d.dates} />
+                  <ListItemText inset>
+                    {dates.map((date, j) => {
+                      const startDate = moment(date.start, 'MM/DD/YYYY').locale('fr').format('D MMMM YYYY');
+                      const endDate = moment(date.end, 'MM/DD/YYYY').locale('fr').format('D MMMM YYYY');
+                      return (
+                        <p key={j}>{startDate} - {endDate}</p>
+                      )
+                    })}
+                  </ListItemText>
 
-                  {this.props.isAdmin &&
+                  {isAdmin &&
                     <div className='admin-action-buttons'>
                       <Modal item={d} getInvitations={this.getInvitations} />
                       <Button onClick={() => this.removeItem(d._id)}
                         size='small'
                         color='secondary'>
                         Supprimer
-                    </Button>
+                      </Button>
                     </div>
                   }
 
                 </ListItem>
               )
+
             })}
           </List>
         }
 
-        {!this.props.isAdmin &&
-          <Button  disabled={this.state.invitations.length === 0} className='submit-button' type='submit' size='large' variant='contained' color='primary' onClick={this.handleSubmit}>
+        {!isAdmin &&
+          <Button disabled={selectedDatesId === ''} className='submit-button' type='submit' size='large' variant='extendedFab' color='primary' onClick={this.handleSubmit}>
             Valider
           </Button>
         }

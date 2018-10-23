@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import moment from 'moment';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 
-import Calendar from '../Calendar';
 import Invitations from '../Invitations';
 
 class UserInterface extends Component {
@@ -76,12 +74,12 @@ class UserInterface extends Component {
                                 required
                                 value={name.value}
                                 variant='outlined' />
-                            <Button className='submit-button' type='submit' size='large' variant='contained' color='primary' onClick={this.handleFormSubmit}>
+                            <Button className='submit-button' type='submit' size='large' variant='extendedFab' color='primary' onClick={this.handleFormSubmit}>
                                 Valider
                             </Button>
 
                             <Link to='/calendrier' className='show-calendar'>
-                                <Button size='large' variant='outlined' color='primary'>
+                                <Button size='large' variant='text' color='primary'>
                                     Voir le Calendrier
                                 </Button>
                             </Link>
@@ -92,9 +90,9 @@ class UserInterface extends Component {
                         <div className='choose-date'>
                             <h1>Choisissez vos dates, {name.value}</h1>
                             <Invitations lastname={lastname}
-                                    name={name}
-                                    title={`${lastname.value} ${name.value}`}
-                                    history={this.props.history} />
+                                name={name}
+                                title={`${lastname.value} ${name.value}`}
+                                history={this.props.history} />
                         </div>
                     }
                 </div>

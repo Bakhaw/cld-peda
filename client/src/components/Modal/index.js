@@ -41,6 +41,7 @@ class Modal extends Component {
   }
 
   render() {
+    const { _id, dates } = this.props.item;
     return (
       <div>
         <Button onClick={this.showDialog} color='primary' variant='outlined' size='small'>Modifier</Button>
@@ -55,7 +56,7 @@ class Modal extends Component {
           <DialogContent>
             <TextField
               autoFocus
-              defaultValue={this.props.item.dates}
+              defaultValue={dates}
               onChange={(e) => this.handleInputChange(e)}
               multiline
               margin="dense"
@@ -67,9 +68,9 @@ class Modal extends Component {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.closeDialog} color='secondary' variant='outlined'>
-              Cancel
+              Annuler
           </Button>
-            <Button onClick={() => this.updateItem(this.props.item._id)} color='primary' variant='contained'>
+            <Button onClick={() => this.updateItem(_id)} color='primary' variant='contained'>
               Sauvegarder
           </Button>
           </DialogActions>
