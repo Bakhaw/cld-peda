@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -29,7 +30,7 @@ class EventInfosModal extends Component {
   }
 
   render() {
-    const { selectedCardTitle, selectedCards } = this.props;
+    const { loading, selectedCardTitle, selectedCards } = this.props;
     return (
       <div>
         <Dialog
@@ -41,7 +42,9 @@ class EventInfosModal extends Component {
         >
           <DialogTitle id='form-dialog-title' className='modal-calendar-title'>{selectedCardTitle}</DialogTitle>
           <DialogContent>
-            {selectedCards.map((d, i) => {
+            {loading && <div className='modal-loading-container'><CircularProgress/></div>}
+
+            {!loading && selectedCards.map((d, i) => {
               return (
                 <div key={i}>
                   <h3>Date {i + 1}</h3>

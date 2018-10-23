@@ -11,6 +11,7 @@ class Calendar extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: false,
             calendarCards: [],
             isCalendarModalOpen: false,
             messages: {
@@ -32,7 +33,6 @@ class Calendar extends Component {
     }
 
     getAllCalendarCards = async () => {
-        console.log('getAllCalendarCards')
         const request = await axios.get('/calendar');
         const calendarCards = await request.data;
 
@@ -42,17 +42,18 @@ class Calendar extends Component {
     handleSelectedEvent = async (selectedEvent) => {
         const request = await axios.get(`/calendar/${selectedEvent.invitationId}`);
         const selectedCards = await request.data;
+
         this.setState({ selectedCards, selectedCardTitle: selectedEvent.title });
     }
 
     showCalendarModal = async (e) => {
+        this.setState({ isCalendarModalOpen: true, loading: true })
         await this.handleSelectedEvent(e);
-        this.setState({ isCalendarModalOpen: true })
+        this.setState({ loading: false })
     }
 
     closeCalendarModal = () => {
-        console.log('closeCalendarModal')
-        this.setState({ isCalendarModalOpen: false })        
+        this.setState({ isCalendarModalOpen: false })
     }
 
     render() {
@@ -60,11 +61,6 @@ class Calendar extends Component {
         return (
             <div>
                 <BigCalendar culture='fr-FR'
-                    // formats={{
-                    //     eventTimeRangeFormat: ({ start, end }, culture, local) =>
-                    //         local.format(start, 'DD/MM/YYYY', culture) +
-                    //         local.format(end, 'DD/MM/YYYY', culture),
-                    // }}
                     defaultView='month'
                     endAccessor='end'
                     events={calendarCards}
@@ -74,13 +70,14 @@ class Calendar extends Component {
                     startAccessor='start'
                     views={['month', 'week']} />
 
-                    {isCalendarModalOpen &&
-                        <CalendarModal isCalendarModalOpen={isCalendarModalOpen}
-                                    closeCalendarModal={this.closeCalendarModal}
-                                    getAllCalendarCards={this.getAllCalendarCards}
-                                    selectedCardTitle={selectedCardTitle}
-                                    selectedCards={selectedCards}/>
-                    }
+                {isCalendarModalOpen &&
+                    <CalendarModal isCalendarModalOpen={isCalendarModalOpen}
+                        closeCalendarModal={this.closeCalendarModal}
+                        getAllCalendarCards={this.getAllCalendarCards}
+                        loading={this.state.loading}
+                        selectedCardTitle={selectedCardTitle}
+                        selectedCards={selectedCards} />
+                }
             </div>
         )
     }
