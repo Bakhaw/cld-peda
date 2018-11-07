@@ -43,7 +43,11 @@ export class MyProvider extends Component {
         const request = await axios.get('/invitations/availables/dates');
         const availablesEvents = await request.data;
 
-        this.setState({ availablesEvents });
+        this.setState({
+            availablesEvents,
+            selectedEventOnEventsList: [],
+            selectedEventOnEventsListId: ''
+        });
     }
 
     selectEvent = (item) => {
@@ -80,7 +84,7 @@ export class MyProvider extends Component {
             url: '/calendar/add',
             data: params
         })
-        .catch(err => console.log(err))
+            .catch(err => console.log(err))
 
         history.push('/calendrier')
         await this.toggleEventCheckToTrue();

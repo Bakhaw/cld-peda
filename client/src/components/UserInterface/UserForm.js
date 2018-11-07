@@ -28,7 +28,12 @@ function UserForm({ handleChangeInput, handleFormSubmit, lastname, name }) {
                 required
                 value={name.value}
                 variant='outlined' />
-            <Button className='submit-button' type='submit' size='large' variant='extendedFab' color='primary' onClick={handleFormSubmit}>
+            <Button className='submit-button'
+                color='primary'
+                onClick={handleFormSubmit}
+                size='large'
+                type='submit'
+                variant='extendedFab'>
                 Valider
             </Button>
 

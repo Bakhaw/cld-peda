@@ -33,7 +33,7 @@ class AdminInterface extends Component {
 
 
   render() {
-    const { errorPass, showAdminInterface } = this.state;
+    const { errorPass, inputValue, showAdminInterface } = this.state;
     return (
       <div className='admin-container'>
         {!showAdminInterface &&
@@ -48,7 +48,11 @@ class AdminInterface extends Component {
               required
               type='password'
               onChange={this.handleInputChange} />
-            <Button variant='extendedFab' color='primary' size='large' onClick={this.checkPass}>
+            <Button color='primary'
+                    disabled={inputValue === ''}
+                    onClick={this.checkPass}
+                    size='large'
+                    variant='extendedFab' >
               Valider
             </Button>
           </div>

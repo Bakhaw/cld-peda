@@ -77,7 +77,7 @@ class AlertModal extends Component {
                         <DialogContent>
                             <Typography variant='subheading'>
                                 {selectedEventOnCalendarType === 'invitation'
-                                    ? 'Êtes-vous sûr de vouloir vous retirer de cet évènement ?'
+                                    ? 'Êtes-vous sûr de vouloir vous retirer de cet évènement ? (vous serez retiré de tous les bilans)'
                                     : 'Voulez-vous vraiment supprimer cet évènement ?'
                                 }
                             </Typography>
