@@ -4,15 +4,23 @@
 @import '../components/Calendar/styles';
 @import '../components/CreateInvitation/styles';
 @import '../components/Invitations/styles';
+@import '../components/Loader/styles';
 @import '../components/UserInterface/styles';
 @import '../components/Navbar/styles';
+
 
 body {
   padding: 0;
   margin: 0;
+  overflow-x: hidden;
   a {
     text-decoration: none;
   }
+}
+
+#app {
+  min-width: 100%;
+  min-height: 100%;
 }
 
 .rbc-calendar {

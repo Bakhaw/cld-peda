@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import AdminInterface from './components/AdminInterface';
@@ -9,14 +9,14 @@ import UserInterface from './components/UserInterface';
 const Router = () => {
     return (
         <BrowserRouter>
-            <div>
+            <Fragment>
                 <Navbar />
                 <Switch>
                     <Route path='/calendrier' component={Calendar} />
                     <Route path='/admin' component={AdminInterface} />
                     <Route path='/' component={UserInterface} />
                 </Switch>
-            </div>
+            </Fragment>
         </BrowserRouter>
     )
 }

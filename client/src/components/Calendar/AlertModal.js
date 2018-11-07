@@ -1,83 +1,102 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
 
-class EventInfosModal extends Component {
+import Loader from '../Loader';
 
-    state = {
-        loading: false
-    }
+import { withContext } from '../../context/AppStateProvider';
 
-    removeUserFromEvent = async () => {
-        console.log('Remove user from event')
+class AlertModal extends Component {
 
-        this.setState({ loading: true })
+    handleRemoveUserFromEventSubmit = async () => {
+        const { actions, calendar, getAllCalendarCards } = this.props;
+        const { selectedEventOnCalendar, selectedEventOnCalendarType } = calendar.state;
+        const { toggleModalLoading } = actions;
 
-        axios.get(`/calendar/delete/${this.props.selectedCards[0].invitationId}`)
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
+        let query;
 
+        toggleModalLoading(true);
 
-        await this.toggleEventCheckToFalse();
-        await this.props.getAllCalendarCards();
+        if (selectedEventOnCalendarType === 'invitation') {
+            // ? Si c'est une invitation, donc que qqun s'est inscrit dessus
+            query = `delete/cardsByInvitationId/${selectedEventOnCalendar[0].invitationId}`;
+        } else {
+            // ? Si c'est un event ajouté direct au calendrier depuis l'interface Admin
+            query = `delete/${selectedEventOnCalendar[0]._id}`;
+        }
+
+        try {
+            await axios.get(`/calendar/${query}`).catch(err => console.log(err));
+            if (selectedEventOnCalendarType === 'invitation') await this.toggleEventCheckToFalse();
+        } catch (err) {
+            console.log(err);
+        }
+
+        await getAllCalendarCards();
         this.props.closeAlertModal();
-        this.props.closeCalendarModal();
+        calendar.actions.closeCalendarModal();
 
-        this.setState({ loading: false })
+        toggleModalLoading(false);
     }
 
-    toggleEventCheckToFalse = () => {
-        console.log('Toggle event check to false')
-        axios.get(`/invitations/toggleEventCheckToFalse/${this.props.selectedCards[0].invitationId}`)
-            .then(res => console.log(res))
-            .catch(err => console.log(err));
+    toggleEventCheckToFalse = async () => {
+        const { calendar } = this.props;
+        const { selectedEventOnCalendar } = calendar.state;
+        try {
+            await axios.get(`/invitations/toggleEventCheckToFalse/${selectedEventOnCalendar[0].invitationId}`).catch(err => console.log(err));
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     render() {
+        const { calendar, contextState, closeAlertModal, isAlertModalOpen } = this.props;
+        const { selectedEventOnCalendarType } = calendar.state;
+        const { modalLoading } = contextState;
+
         return (
-            <div>
-                <Dialog
-                    open={this.props.isAlertModalOpen}
-                    // onClose={this.props.closeAlertModal}
-                    maxWidth='sm'
-                    fullWidth
-                    aria-labelledby='form-dialog-title'
-                >
-                    {this.state.loading &&
+            <Dialog
+                open={isAlertModalOpen}
+                maxWidth='sm'
+                fullWidth
+                aria-labelledby='form-dialog-title'
+            >
+                {modalLoading &&
+                    <DialogContent>
+                        <Loader />
+                    </DialogContent>
+                }
+
+                {!modalLoading &&
+                    <Fragment>
                         <DialogContent>
-                            <div className='modal-loading-container'><CircularProgress /></div>
+                            <Typography variant='subheading'>
+                                {selectedEventOnCalendarType === 'invitation'
+                                    ? 'Êtes-vous sûr de vouloir vous retirer de cet évènement ?'
+                                    : 'Voulez-vous vraiment supprimer cet évènement ?'
+                                }
+                            </Typography>
                         </DialogContent>
-                    }
 
-                    {!this.state.loading &&
-                        <div>
-                            <DialogContent>
-                                <Typography variant='subheading'>
-                                    Êtes-vous sûr de vouloir vous retirer de cet évènement ?
-                                </Typography>
-                            </DialogContent>
+                        <DialogActions>
+                            <Button onClick={closeAlertModal} color='secondary' variant='text'>
+                                Non
+                            </Button>
 
-                            <DialogActions>
-                                <Button onClick={this.props.closeAlertModal} color='secondary' variant='text'>
-                                    Non
-                                </Button>
-
-                                <Button onClick={this.removeUserFromEvent} color='primary' variant='contained'>
-                                    Oui
-                                </Button>
-                            </DialogActions>
-                        </div>
-                    }
-                </Dialog>
-            </div>
+                            <Button onClick={this.handleRemoveUserFromEventSubmit} color='primary' variant='contained'>
+                                Oui
+                            </Button>
+                        </DialogActions>
+                    </Fragment>
+                }
+            </Dialog>
         );
     }
 }
 
-export default EventInfosModal;
+export default withContext(AlertModal);

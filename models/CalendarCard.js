@@ -4,7 +4,10 @@ const CalendarCardSchema = new mongoose.Schema({
     title: String,
     start: String,
     end: String,
-    allDay: Boolean,
+    allDay: {
+        type: Boolean,
+        default: true
+    },
     invitationId: mongoose.Schema.Types.ObjectId
 })
 

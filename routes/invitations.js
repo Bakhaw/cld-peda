@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import moment from 'moment';
 import Invitation from '../models/Invitation';
 
 const router = Router();
@@ -18,47 +19,64 @@ router.get('/availables', (req, res) => {
 });
 
 // ? GET ONLY DATES OF ALL INVITATIONS
-router.get('/availables/dates', async (req, res) => {
+router.get('/availables/dates', (req, res) => {
   const query = { checked: false };
 
-  let filteredDates = [];
   const formatted = [];
 
-  await Invitation.find(query, (err, invit) => {
+  Invitation.find(query, (err, invit) => {
     if (err) return console.log(err);
-    filteredDates = invit.map(d => d.dates.split(','));
-  });
 
+    const filteredDates = invit.map(item => item.dates.split(','))
 
-  filteredDates.forEach((d, index) => {
-    d.forEach((e, j) => {
-      const start = d[j].split('-')[0];
-      const end = d[j].split('-')[1];
-
-      formatted.push({ start, end, index })
+    filteredDates.forEach((items, index) => {
+      items.forEach((item, j) => {
+        const start = items[j].split('-')[0];
+        const end = items[j].split('-')[1];
+        formatted.push({ start, end, index })
+      })
     })
-  });
 
-  const result = formatted.reduce((acc, curr) => {
-    //finding Index in the array where the index matched
-    const findIfIndexExist = acc.findIndex(item => item.index === curr.index);
-    // if in the new array no such object exist where
-    // namecategory matches then create a new object
-    if (findIfIndexExist === -1) {
-      const obj = {
-        index: curr.index,
-        dates: [curr]
+    const result = formatted.reduce((acc, curr) => {
+      const findIfIndexExist = acc.findIndex(item => item.index === curr.index);
+      if (findIfIndexExist === -1) {
+        const obj = {
+          index: curr.index,
+          dates: [curr]
+        }
+        acc.push(obj)
+      } else {
+        acc[findIfIndexExist].dates.push(curr)
       }
-      acc.push(obj)
-    } else {
-      // if name category matches , then push the value 
-      acc[findIfIndexExist].dates.push(curr)
-    }
-    return acc;
 
-  }, []);
+      return acc;
+    }, []);
 
-  res.json(result)
+    res.send(result)
+  })
+
+
+
+
+  // const result = await formatted.reduce((acc, curr) => {
+  //   //finding Index in the array where the index matched
+  //   const findIfIndexExist = acc.findIndex(item => item.index === curr.index);
+  //   // if in the new array no such object exist where
+  //   // namecategory matches then create a new object
+  //   if (findIfIndexExist === -1) {
+  //     const obj = {
+  //       index: curr.index,
+  //       dates: [curr]
+  //     }
+  //     acc.push(obj)
+  //   } else {
+  //     // if name category matches , then push the value 
+  //     acc[findIfIndexExist].dates.push(curr)
+  //   }
+
+  //   return acc;
+  // }, []);
+
 });
 
 // ? ADD A NEW INVITATION
@@ -83,13 +101,14 @@ router.get('/toggleEventCheckToTrue/:eventId', (req, res) => {
   const options = { upsert: false, 'new': false };
 
   Invitation.findOneAndUpdate(query, update, options, (err, inv) => {
-    if (err) {
-      return res.status(500).send(err);
-    }
-    if (!inv) {
-      return res.status(400).send({ msg: 'Already exist or not found' });
-    }
-    return res.status(200).send({ message: "Thanks :)" });
+    return err ? console.log(err) : res.json(inv)
+    // if (err) {
+    //   return res.status(500).send(err);
+    // }
+    // if (!inv) {
+    //   return res.status(400).send({ msg: 'Already exist or not found' });
+    // }
+    // return res.status(200).send({ message: "Thanks :)" });
   })
 });
 

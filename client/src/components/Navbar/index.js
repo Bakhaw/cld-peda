@@ -7,7 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 
 const Navbar = () => {
     return (
-        <AppBar position='static' color='default' className='navbar'>
+        <AppBar position='sticky' color='default' className='navbar'>
             <Toolbar>
                 <Link to='/'>
                     <Button>Accueil</Button>

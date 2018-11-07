@@ -47,7 +47,7 @@ module.exports = {
     historyApiFallback: true,
     proxy: [{
       path: ['/invitations', '/calendar'],
-      target: 'http://localhost:8090',
+      target: 'http://localhost:8090'
     }]
   },
   plugins: [

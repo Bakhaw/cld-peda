@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 
 import Button from '@material-ui/core/Button';
@@ -8,11 +8,16 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 
-class Modal extends Component {
+import { withContext } from '../../context/AppStateProvider';
 
-  state = {
-    inputValue: this.props.item.dates,
-    showDialog: false
+class EditEventModal extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      inputValue: '',
+      showDialog: false
+    }
   }
 
   handleInputChange = (e) => {
@@ -28,23 +33,28 @@ class Modal extends Component {
   }
 
   updateItem = async (id) => {
+    const { getAvailablesEvents, getAvailablesEventsDatesJSON } = this.props.actions;
     const params = new URLSearchParams();
     params.append('dates', this.state.inputValue);
-    await axios({
+
+    axios({
       method: 'post',
       url: `/invitations/update/${id}`,
       data: params
-    });
+    })
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
 
+    await getAvailablesEventsDatesJSON();
+    await getAvailablesEvents();
     this.closeDialog();
-    this.props.getInvitations();
   }
 
   render() {
     const { _id, dates } = this.props.item;
     return (
-      <div>
-        <Button onClick={this.showDialog} color='primary' variant='outlined' size='small'>Modifier</Button>
+      <Fragment>
+        <Button onClick={this.showDialog} color='primary' variant='text' size='small'>Modifier</Button>
         <Dialog
           open={this.state.showDialog}
           onClose={this.closeDialog}
@@ -67,17 +77,17 @@ class Modal extends Component {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.closeDialog} color='secondary' variant='outlined'>
+            <Button onClick={this.closeDialog} color='secondary' variant='text'>
               Annuler
-          </Button>
-            <Button onClick={() => this.updateItem(_id)} color='primary' variant='contained'>
+                  </Button>
+            <Button onClick={() => this.updateItem(_id)} color='primary' variant='extendedFab'>
               Sauvegarder
-          </Button>
+                  </Button>
           </DialogActions>
         </Dialog>
-      </div>
+      </Fragment>
     );
   }
 }
 
-export default Modal;
+export default withContext(EditEventModal);

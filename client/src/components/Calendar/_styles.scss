@@ -1,20 +1,12 @@
-.modal-calendar-title,
-.modal-calendar-date {
-    text-transform: capitalize;
-}
-
-.modal-loading-container {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .event-infos-modal-content {
     display: flex;
     justify-content: space-evenly;
     align-items: flex-start;
     flex-wrap: wrap;
+    @include xs {
+        flex-direction: column;
+        justify-content: center;
+    }
     .date-card {
         h2 {
             font-size: 20px;

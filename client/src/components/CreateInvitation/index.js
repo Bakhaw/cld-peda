@@ -3,6 +3,9 @@ import axios from 'axios';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+
+import { withContext } from '../../context/AppStateProvider';
 
 class CreateInvitation extends Component {
 
@@ -10,28 +13,46 @@ class CreateInvitation extends Component {
     super(props);
     this.state = {
       inputValue: '',
+      inputError: false
     }
   }
-  
-  handleChange = event => {
-    this.setState({
-      inputValue: event.target.value
-    })
+
+  checkInputError = () => {
+    const { inputValue } = this.state;
+
+    // TODO inputValue.split('-') pour check chaque dates toute seule et vérifier si elle est valide avec moment(date).isValid()
+
+    if (inputValue === '') return this.setState({ inputError: true });
+  }
+
+  handleInputChange = event => {
+    this.setState({ inputValue: event.target.value });
   }
 
   handleSubmit = async (event) => {
     event.preventDefault();
+    
+    await this.checkInputError();
+
+    const { inputError, inputValue } = this.state;
+    const { getAvailablesEvents, getAvailablesEventsDatesJSON } = this.props.actions;
     const params = new URLSearchParams();
-    params.append('dates', this.state.inputValue);
+
+    params.append('dates', inputValue);
     params.append('checked', false);
+
+    if (inputError) return console.log('inputError sorry :)')
 
     try {
       await axios({
         method: 'post',
         url: '/invitations/add',
         data: params,
-      });      
-      this.props.getInvitations();
+      });
+
+      await getAvailablesEventsDatesJSON();
+      await getAvailablesEvents();
+
       this.setState({ inputValue: '' });
     } catch (err) {
       console.log(err);
@@ -39,19 +60,22 @@ class CreateInvitation extends Component {
   }
 
   render() {
+    const { inputError, inputValue } = this.state;
     return (
       <div className='create-invitation'>
-        <h1>Créer des invitations</h1>
+        <Typography variant='h1'>Créer des invitations</Typography>
 
         <form onSubmit={(e) => this.handleSubmit(e)}>
-          <TextField
+          <TextField error={inputError}
             id='outlined-name'
             label='Ajouter des dates'
-            name='dates'
-            value={this.state.inputValue}
-            onChange={this.handleChange}
-            multiline
+            placeholder='MM/JJ/AAAA'
+            helperText='(Si dates début - fin sont identiques, mettre quand même les deux dates)'
             margin='normal'
+            multiline
+            name='dates'
+            onChange={this.handleInputChange}
+            value={inputValue}
             variant='outlined'
           />
 
@@ -64,4 +88,4 @@ class CreateInvitation extends Component {
   }
 }
 
-export default CreateInvitation;
+export default withContext(CreateInvitation);

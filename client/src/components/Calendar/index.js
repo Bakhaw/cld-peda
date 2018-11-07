@@ -1,8 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import axios from 'axios';
 import moment from 'moment';
 import BigCalendar from 'react-big-calendar';
-import CalendarModal from './EventInfosModal';
+
+import EventInfosModal from './EventInfosModal';
+import Loader from '../Loader';
+
+import { withContext } from '../../context/AppStateProvider';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
@@ -11,10 +15,7 @@ class Calendar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
-            calendarCards: [],
-            isCalendarModalOpen: false,
-            messages: {
+            messages: { // ? modifie les keys par leur valeur, ex: month devient Mois, dans l'affichage du Calendrier
                 month: 'Mois',
                 week: 'Semaine',
                 day: 'Jour',
@@ -22,14 +23,17 @@ class Calendar extends Component {
                 previous: '<',
                 next: '>',
             },
-            selectedCardTitle: '',
-            selectedCards: []
+            calendarCards: [],
         }
         this.localizer = BigCalendar.momentLocalizer(moment);
     }
 
-    componentDidMount() {
-        this.getAllCalendarCards();
+    async componentDidMount() {
+        const { toggleAppLoading } = this.props.actions;
+
+        toggleAppLoading(true);
+        await this.getAllCalendarCards();
+        toggleAppLoading(false);
     }
 
     getAllCalendarCards = async () => {
@@ -39,48 +43,38 @@ class Calendar extends Component {
         this.setState({ calendarCards });
     }
 
-    handleSelectedEvent = async (selectedEvent) => {
-        const request = await axios.get(`/calendar/${selectedEvent.invitationId}`);
-        const selectedCards = await request.data;
-
-        this.setState({ selectedCards, selectedCardTitle: selectedEvent.title });
-    }
-
-    showCalendarModal = async (e) => {
-        this.setState({ isCalendarModalOpen: true, loading: true })
-        await this.handleSelectedEvent(e);
-        this.setState({ loading: false })
-    }
-
-    closeCalendarModal = () => {
-        this.setState({ isCalendarModalOpen: false })
+    openCalendarModal = async (e) => {
+        const { handleClickOnEventOnCalendar, openCalendarModal, toggleModalLoading } = this.props.actions;
+        toggleModalLoading(true);
+        openCalendarModal();
+        await handleClickOnEventOnCalendar(e);
+        toggleModalLoading(false);
     }
 
     render() {
-        const { isCalendarModalOpen, calendarCards, messages, selectedCards, selectedCardTitle } = this.state;
+        const { calendarCards, messages } = this.state;
+        const { contextState } = this.props;
+
+        const { appLoading } = contextState;
+
+        if (appLoading) return <Loader />;
+
         return (
-            <div>
+            <Fragment>
                 <BigCalendar culture='fr-FR'
                     defaultView='month'
                     endAccessor='end'
                     events={calendarCards}
                     localizer={this.localizer}
                     messages={messages}
-                    onSelectEvent={this.showCalendarModal}
+                    onSelectEvent={this.openCalendarModal}
                     startAccessor='start'
                     views={['month', 'week']} />
 
-                {isCalendarModalOpen &&
-                    <CalendarModal isCalendarModalOpen={isCalendarModalOpen}
-                        closeCalendarModal={this.closeCalendarModal}
-                        getAllCalendarCards={this.getAllCalendarCards}
-                        loading={this.state.loading}
-                        selectedCardTitle={selectedCardTitle}
-                        selectedCards={selectedCards} />
-                }
-            </div>
+                <EventInfosModal getAllCalendarCards={this.getAllCalendarCards} />
+            </Fragment>
         )
     }
 }
 
-export default Calendar;
+export default withContext(Calendar);

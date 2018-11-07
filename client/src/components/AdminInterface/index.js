@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import key from '../../key';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 
 import Invitations from '../Invitations';
 
@@ -19,7 +20,9 @@ class AdminInterface extends Component {
   }
 
   checkPass = () => {
-    if (this.state.inputValue === this.state.key) {
+    const { inputValue, key } = this.state;
+
+    if (inputValue === key) {
       this.setState({ errorPass: false, showAdminInterface: true })
     } else {
       this.setState({ errorPass: true, showAdminInterface: false }, () => {
@@ -35,7 +38,7 @@ class AdminInterface extends Component {
       <div className='admin-container'>
         {!showAdminInterface &&
           <div className='login'>
-            <h1>Bienvenue</h1>
+            <Typography variant='h1'>Connexion</Typography>
             <TextField className='login-input'
               error={errorPass}
               helperText={errorPass ? 'Mot de passe invalide' : '* Champ requis'}
@@ -53,7 +56,7 @@ class AdminInterface extends Component {
 
         {showAdminInterface &&
           <div className='admin-create-invitations'>
-            <Invitations isAdmin/>
+            <Invitations isAdmin={true} />
           </div>
         }
       </div>
