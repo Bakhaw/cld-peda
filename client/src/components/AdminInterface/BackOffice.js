@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import SwipeableViews from 'react-swipeable-views';
 import AppBar from '@material-ui/core/AppBar';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
@@ -24,14 +23,9 @@ class BackOffice extends Component {
     this.setState({ value });
   };
 
-  handleChangeIndex = index => {
-    this.setState({ value: index });
-  };
-
   render() {
     const { value } = this.state;
-    const { classes, theme } = this.props;
-    console.log(this.state.value);
+    const { classes } = this.props;
     return (
       <div className={classes.root}>
         <AppBar position='static' color='default' className='backoffice__tabs_container'>
