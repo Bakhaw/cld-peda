@@ -5,7 +5,7 @@ const FormTemplate = [
     helperText: '(Si dates début - fin sont identiques, mettre quand même les deux dates)',
     multiline: false,
     name: 'dates', // ? === the key in { this.state }
-    value: 'dates', // ? pareil
+    value: 'dates' // ? pareil
   },
   {
     label: 'Titre',
@@ -13,8 +13,8 @@ const FormTemplate = [
     helperText: 'Description de votre évènement personnalisé',
     multiline: true,
     name: 'title', // ? === the key in { this.state }
-    value: 'title', // ? pareil
-  },
+    value: 'title' // ? pareil
+  }
 ];
 
 export default FormTemplate;

@@ -12,7 +12,7 @@ class AddDates extends Component {
     super(props);
     this.state = {
       inputValue: '',
-      inputError: false,
+      inputError: false
     };
   }
 
@@ -45,7 +45,7 @@ class AddDates extends Component {
         await axios({
           method: 'post',
           url: '/invitations/add',
-          data: params,
+          data: params
         });
 
         await getAvailablesEventsDatesJSON();
@@ -61,25 +61,28 @@ class AddDates extends Component {
   render() {
     const { inputError, inputValue } = this.state;
     return (
-      <div className="create-invitation">
-        <Typography variant="h1">Ajouter des dates</Typography>
+      <div className='create-invitation'>
+        <Typography variant='h1'>Créer une invitation</Typography>
+        <Typography variant='h6' color='secondary'>
+          Une invitation ne s'ajoute pas directement au calendrier, il faut s'y inscrire
+        </Typography>
 
         <form onSubmit={e => this.handleSubmit(e)}>
           <TextField
             error={inputError}
-            id="outlined-name"
-            label="Ajouter des dates"
-            placeholder="JJ/MM/AAAA - JJ/MM/AAAA"
-            helperText="(Si dates début - fin sont identiques, mettre quand même les deux dates)"
-            margin="normal"
+            id='outlined-name'
+            label='Dates'
+            placeholder='JJ/MM/AAAA - JJ/MM/AAAA'
+            helperText='(Si dates début - fin sont identiques, mettre quand même les deux dates)'
+            margin='normal'
             multiline
-            name="dates"
+            name='dates'
             onChange={this.handleInputChange}
             value={inputValue}
-            variant="outlined"
+            variant='outlined'
           />
 
-          <Button type="submit" size="large" variant="extendedFab" color="primary">
+          <Button type='submit' size='large' variant='extendedFab' color='primary'>
             Valider
           </Button>
         </form>

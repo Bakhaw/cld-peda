@@ -11,14 +11,33 @@
     font-size: $titleFontSize;
     color: $bluePurple;
   }
+  h2 {
+    font-size: 24px;
+    color: #1e1e1e;
+    font-weight: normal;
+  }
   @include xs {
-    width: 100%;
+    width: 90%;
+    h1 {
+      font-size: 2rem;
+    }
+    h2 {
+      font-size: 20px;
+    }
   }
   @include sm {
-    width: 100%;
+    width: 90%;
   }
   @include md {
     width: 100%;
+  }
+  .backoffice__tabs_container {
+    background-color: transparent;
+    box-shadow: none;
+  }
+  .backoffice__tab {
+    padding: 8 * 3;
+    overflow: hidden;
   }
 }
 
@@ -43,8 +62,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 20px 0;
   h1 {
     width: 100vw;
+  }
+  h6 {
+    font-size: 16px;
+    font-style: italic;
   }
   form {
     display: flex;

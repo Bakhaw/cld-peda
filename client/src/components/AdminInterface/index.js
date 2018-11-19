@@ -5,7 +5,7 @@ import NotLogged from './NotLogged';
 
 class AdminInterface extends Component {
   state = {
-    showAdminInterface: true,
+    showAdminInterface: false
   };
 
   showAdminInterface = () => {
@@ -15,7 +15,7 @@ class AdminInterface extends Component {
   render() {
     const { showAdminInterface } = this.state;
     return (
-      <div className="admin-container">
+      <div className='admin-container'>
         {!showAdminInterface && <NotLogged showAdminInterface={this.showAdminInterface} />}
 
         {showAdminInterface && <BackOffice />}

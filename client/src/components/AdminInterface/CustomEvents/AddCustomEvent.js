@@ -12,13 +12,13 @@ class AddCustomEvents extends Component {
   initialState = {
     dates: {
       error: false,
-      value: '',
+      value: ''
     },
     title: {
       error: false,
-      value: '',
+      value: ''
     },
-    formError: false,
+    formError: false
   };
 
   state = this.initialState;
@@ -27,9 +27,9 @@ class AddCustomEvents extends Component {
     this.setState({
       [key]: {
         ...this.state[key],
-        error: true,
+        error: true
       },
-      formError: true,
+      formError: true
     });
   };
 
@@ -40,13 +40,13 @@ class AddCustomEvents extends Component {
     this.setState({
       dates: {
         ...this.state.dates,
-        error: false,
+        error: false
       },
       title: {
         ...this.state.title,
-        error: false,
+        error: false
       },
-      formError: false,
+      formError: false
     }); // ? reset value after retyping in input
 
     if (dates.value === '') this.toggleInputError('dates');
@@ -57,8 +57,8 @@ class AddCustomEvents extends Component {
     this.setState({
       [event.target.name]: {
         ...this.state[event.target.name],
-        value: event.target.value,
-      },
+        value: event.target.value
+      }
     });
   };
 
@@ -80,7 +80,7 @@ class AddCustomEvents extends Component {
         await axios({
           method: 'post',
           url: '/calendar/add',
-          data: params,
+          data: params
         });
 
         await getAvailablesEventsDatesJSON();
@@ -97,8 +97,11 @@ class AddCustomEvents extends Component {
 
   render() {
     return (
-      <div className="create-invitation">
-        <Typography variant="h1">Ajouter un évènement personnalisé</Typography>
+      <div className='create-invitation'>
+        <Typography variant='h1'>Créer un évènement personnalisé</Typography>
+        <Typography variant='h6' color='secondary'>
+          Un évènement personnalisé s'ajoute directement au calendrier, pas besoin de s'y inscrire
+        </Typography>
 
         <form onSubmit={e => this.handleSubmit(e)}>
           {FormTemplate.map((item, index) => {
@@ -107,21 +110,22 @@ class AddCustomEvents extends Component {
               <TextField
                 key={index}
                 error={this.state[value].error}
-                id="outlined-name"
+                id='outlined-name'
                 helperText={helperText}
                 label={label}
-                margin="normal"
+                margin='normal'
                 multiline={multiline}
                 name={name}
                 onChange={this.handleInputChange}
                 placeholder={placeholder}
+                style={{ width: '100%' }}
                 value={this.state[value].value}
-                variant="outlined"
+                variant='outlined'
               />
             );
           })}
 
-          <Button type="submit" size="large" variant="extendedFab" color="primary">
+          <Button type='submit' size='large' variant='extendedFab' color='primary'>
             Valider
           </Button>
         </form>

@@ -11,13 +11,13 @@ import Dates from './Dates';
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: '100%',
-  },
+    width: '100%'
+  }
 });
 
 class BackOffice extends Component {
   state = {
-    value: 0,
+    value: 0
   };
 
   handleChange = (event, value) => {
@@ -29,25 +29,28 @@ class BackOffice extends Component {
   };
 
   render() {
+    const { value } = this.state;
     const { classes, theme } = this.props;
-
+    console.log(this.state.value);
     return (
       <div className={classes.root}>
-        <AppBar position="static" color="default">
-          <Tabs value={this.state.value} onChange={this.handleChange} indicatorColor="primary" textColor="primary" centered>
-            <Tab label="Dates disponibles" />
-            <Tab label="Évènements personnalisés" />
+        <AppBar position='static' color='default' className='backoffice__tabs_container'>
+          <Tabs value={this.state.value} onChange={this.handleChange} indicatorColor='primary' textColor='primary' centered>
+            <Tab label='invitations' />
+            <Tab label='évènements personnalisés' />
           </Tabs>
         </AppBar>
-        <SwipeableViews axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'} index={this.state.value} onChangeIndex={this.handleChangeIndex}>
-          <div style={{ padding: 8 * 3, overflow: 'hidden' }}>
+
+        {value === 0 && (
+          <div className='backoffice__tab'>
             <Dates />
           </div>
-
-          <div style={{ padding: 8 * 3, overflow: 'hidden' }}>
+        )}
+        {value === 1 && (
+          <div className='backoffice__tab'>
             <CustomEvents />
           </div>
-        </SwipeableViews>
+        )}
       </div>
     );
   }

@@ -15,7 +15,7 @@ import { withContext } from '../../context/AppStateProvider';
 
 class EventInfosModal extends Component {
   state = {
-    isAlertModalOpen: false,
+    isAlertModalOpen: false
   };
 
   addStartDate = date => {
@@ -35,13 +35,13 @@ class EventInfosModal extends Component {
 
   displayDates = selectedEventOnCalendar => {
     return selectedEventOnCalendar.map((d, i) => (
-      <div key={i} className="date-card">
-        <h2>Bilan n°{i + 1}</h2>
-        <Typography variant="subheading" className="modal-calendar-date">
+      <div key={i} className='date-card'>
+        <h2>Date n°{i + 1}</h2>
+        <Typography variant='subheading' className='modal-calendar-date'>
           {this.addStartDate(d.start)}
         </Typography>
         {this.addStartDate(d.start) !== this.addEndDate(d.end) && (
-          <Typography variant="subheading" className="modal-calendar-date">
+          <Typography variant='subheading' className='modal-calendar-date'>
             {this.addEndDate(d.end)}
           </Typography>
         )}
@@ -65,18 +65,18 @@ class EventInfosModal extends Component {
 
     return (
       <Fragment>
-        <Dialog open={isCalendarModalOpen} onClose={closeCalendarModal} maxWidth="md" fullWidth aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">{selectedEventOnCalendarTitle}</DialogTitle>
-          <DialogContent className="event-infos-modal-content">
+        <Dialog open={isCalendarModalOpen} onClose={closeCalendarModal} maxWidth='md' fullWidth aria-labelledby='form-dialog-title'>
+          <DialogTitle id='form-dialog-title'>{selectedEventOnCalendarTitle}</DialogTitle>
+          <DialogContent className='event-infos-modal-content'>
             {modalLoading && <Loader />}
 
             {!modalLoading && this.displayDates(selectedEventOnCalendar)}
           </DialogContent>
           <DialogActions>
-            <Button onClick={closeCalendarModal} color="secondary" variant="text">
+            <Button onClick={closeCalendarModal} color='secondary' variant='text'>
               Fermer
             </Button>
-            <Button onClick={this.showAlertModal} color="primary" variant="contained">
+            <Button onClick={this.showAlertModal} color='primary' variant='contained'>
               {selectedEventOnCalendarType === 'invitation' ? 'Me retirer de cet évènement' : 'Supprimer cet évènement'}
             </Button>
           </DialogActions>
