@@ -11,15 +11,17 @@ const app = express();
 
 mongoose.connect(config.mongoUrl, { useNewUrlParser: true }, () => console.log(`DB connected at ${config.mongoUrl} ...`));
 
-app.use(express.static(path.join(__dirname, 'client', 'dist')));
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/invitations', invitationsRoutes);
 app.use('/calendar', calendarCardsRoutes);
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
-})
+if (process.env.NODE_ENV !== 'development') {
+  app.use(express.static(path.join(__dirname, 'client', 'dist')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+  })
+}
 
-app.listen(config.port, () => console.log(`App running on port ${config.port} ...`))
+app.listen(config.port, () => console.log(`App running on port ${config.port} ...`));

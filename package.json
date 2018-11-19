@@ -8,9 +8,11 @@
   },
   "scripts": {
     "heroku-postbuild": "cd client && yarn install --only=dev && yarn install && yarn run build",
-    "start": "nodemon server.js --exec babel-node --presets env",
+    "start": "NODE_ENV=production nodemon server.js --exec babel-node --presets env",
     "import": "mongo < scripts/create_events.js",
-    "drop": "mongo < scripts/drop.js"
+    "drop": "mongo < scripts/drop.js",
+    "dev:server": "nodemon server.js --exec babel-node --presets env",
+    "dev:client": "cd client/ && yarn dev"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",

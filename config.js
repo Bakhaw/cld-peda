@@ -1,5 +1,8 @@
+require('dotenv').config();
+
+const { MONGO_LOCAL_URL, MONGO_PROD_URL, NODE_ENV, PORT } = process.env;
+
 export default {
-  port: process.env.PORT || 8090,
-  mongoUrl: 'mongodb://bakhaw:bakhaw9999@ds237363.mlab.com:37363/calendar'
-  // mongoUrl: 'mongodb://localhost:27017/calendar'
+  port: PORT,
+  mongoUrl: NODE_ENV === 'development' ? MONGO_LOCAL_URL : MONGO_PROD_URL
 }
