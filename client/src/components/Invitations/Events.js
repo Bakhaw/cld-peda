@@ -52,8 +52,8 @@ class Events extends Component {
                                     <div className='invitation-content'>
                                         <ListItemText inset>
                                             {eventDates.map((date, j) => {
-                                                const startDate = moment(date.start, 'MM/DD/YYYY').locale('fr').format('D MMMM YYYY');
-                                                const endDate = moment(date.end, 'MM/DD/YYYY').locale('fr').format('D MMMM YYYY');
+                                                const startDate = moment(date.start, 'DD/MM/YYYY').locale('fr').format('D MMMM YYYY');
+                                                const endDate = moment(date.end, 'DD/MM/YYYY').locale('fr').format('D MMMM YYYY');
                                                 return (
                                                     <p key={j}>
                                                         {startDate} {startDate !== endDate && `- ${endDate}`}

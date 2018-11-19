@@ -26,8 +26,8 @@ router.get('/cardsByInvitationId/:invitationId', (req, res) => {
     if (err) return console.log(err);
     
     cards.sort((left, right) => {
-      const leftDate = moment(left.start, 'MM/DD/YYYY');
-      const rightDate = moment(right.start, 'MM/DD/YYYY');
+      const leftDate = moment(left.start, 'DD/MM/YYYY');
+      const rightDate = moment(right.start, 'DD/MM/YYYY');
       const diff = leftDate.diff(rightDate);
       return diff > 0;
     });
@@ -44,9 +44,11 @@ router.post('/add', (req, res) => {
     const endDates = req.body.endDates.split(',');
 
     startDates.map((d, i) => {
+      const start = moment(d, 'DD/MM/YYYY').format('MM/DD/YYYY');
+      const end = moment(endDates[i], 'DD/MM/YYYY').add(1, 'days').format('MM/DD/YYYY');
       const newCalendarCard = new CalendarCard({
-        start: moment(d, 'MM/DD/YYYY').format('MM/DD/YYYY'),
-        end: moment(endDates[i], 'MM/DD/YYYY').add(1, 'day').format('MM/DD/YYYY'),
+        start: start,
+        end: end,
         allDay: true,
         title: req.body.title,
         invitationId: req.body.invitationId

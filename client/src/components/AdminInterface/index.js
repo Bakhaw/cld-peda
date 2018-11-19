@@ -11,7 +11,7 @@ class AdminInterface extends Component {
   state = {
     key: key,
     inputValue: '',
-    showAdminInterface: false,
+    showAdminInterface: true,
     errorPass: false
   }
 

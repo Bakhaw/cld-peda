@@ -58,6 +58,7 @@ router.get('/availables/dates', (req, res) => {
 // ? ADD A NEW INVITATION
 router.post('/add', (req, res) => {
   const newInvitation = new Invitation(req.body);
+
   newInvitation.save((err, invitation) => {
     return err ? console.log(err) : res.json('Invitation created with success!')
   });

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -69,7 +70,7 @@ class CreateInvitation extends Component {
           <TextField error={inputError}
             id='outlined-name'
             label='Ajouter des dates'
-            placeholder='MM/JJ/AAAA'
+            placeholder='JJ/MM/AAAA'
             helperText='(Si dates début - fin sont identiques, mettre quand même les deux dates)'
             margin='normal'
             multiline
