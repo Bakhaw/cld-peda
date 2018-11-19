@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
+import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 
-import key from "../../key";
+import key from '../../key';
 
-export default class NotLogged extends Component {
+class NotLogged extends Component {
   state = {
     errorPass: false,
-    inputValue: "",
-    key: key
+    inputValue: '',
+    key: key,
   };
 
   handleInputChange = e => {
@@ -35,7 +35,7 @@ export default class NotLogged extends Component {
         <TextField
           className="login-input"
           error={errorPass}
-          helperText={errorPass ? "Mot de passe invalide" : "* Champ requis"}
+          helperText={errorPass ? 'Mot de passe invalide' : '* Champ requis'}
           variant="outlined"
           margin="normal"
           label="Mot de passe"
@@ -43,16 +43,12 @@ export default class NotLogged extends Component {
           type="password"
           onChange={this.handleInputChange}
         />
-        <Button
-          color="primary"
-          disabled={inputValue === ""}
-          onClick={this.checkPass}
-          size="large"
-          variant="extendedFab"
-        >
+        <Button color="primary" disabled={inputValue === ''} onClick={this.checkPass} size="large" variant="extendedFab">
           Valider
         </Button>
       </div>
     );
   }
 }
+
+export default NotLogged;

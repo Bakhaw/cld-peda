@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const CalendarCardSchema = new mongoose.Schema({
   title: String,
@@ -9,10 +9,6 @@ const CalendarCardSchema = new mongoose.Schema({
     default: true,
   },
   invitationId: mongoose.Schema.Types.ObjectId,
-})
+});
 
-export default mongoose.model(
-  'CalendarCard',
-  CalendarCardSchema,
-  'calendar_cards'
-)
+export default mongoose.model('CalendarCard', CalendarCardSchema, 'calendar_cards');

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const InvitationSchema = new mongoose.Schema({
   dates: String,
@@ -6,6 +6,6 @@ const InvitationSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-})
+});
 
-export default mongoose.model('Invitation', InvitationSchema, 'invitations')
+export default mongoose.model('Invitation', InvitationSchema, 'invitations');

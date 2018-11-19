@@ -1,8 +1,8 @@
-import React from 'react'
-import AppBar from '@material-ui/core/AppBar'
-import Button from '@material-ui/core/Button'
-import { Link } from 'react-router-dom'
-import Toolbar from '@material-ui/core/Toolbar'
+import React from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
+import Toolbar from '@material-ui/core/Toolbar';
 
 const Navbar = () => {
   return (
@@ -19,7 +19,7 @@ const Navbar = () => {
         </Link>
       </Toolbar>
     </AppBar>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

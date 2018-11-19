@@ -1,5 +1,5 @@
-load('scripts/events.js')
+load('scripts/events.js');
 
-db = db.getSiblingDB('calendar')
+db = db.getSiblingDB('calendar');
 
-db.calendar_cards.insert(events)
+db.calendar_cards.insert(events);

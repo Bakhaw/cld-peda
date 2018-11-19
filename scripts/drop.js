@@ -1,4 +1,4 @@
-db = db.getSiblingDB('calendar')
+db = db.getSiblingDB('calendar');
 
-db.calendar_cards.drop()
-db.invitations.drop()
+db.calendar_cards.drop();
+db.invitations.drop();

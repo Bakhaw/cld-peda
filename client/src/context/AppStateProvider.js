@@ -1,11 +1,9 @@
-import React, { Component, createContext } from 'react'
-import axios from 'axios'
+import React, { Component, createContext } from 'react';
+import axios from 'axios';
 
-const { Consumer, Provider } = createContext()
+const { Consumer, Provider } = createContext();
 
-export const withContext = Comp => props => (
-  <Consumer>{context => <Comp {...context} {...props} />}</Consumer>
-)
+export const withContext = Comp => props => <Consumer>{context => <Comp {...context} {...props} />}</Consumer>;
 
 export class MyProvider extends Component {
   state = {
@@ -28,142 +26,134 @@ export class MyProvider extends Component {
     selectedEventOnCalendar: [],
     selectedEventOnCalendarTitle: '',
     selectedEventOnCalendarType: '',
-  }
+  };
 
   getAvailablesEvents = async () => {
-    const request = await axios
-      .get('/invitations/availables')
-      .catch(err => console.log(err))
-    const allEvents = await request.data
-    this.setState({ allEvents })
-  }
+    const request = await axios.get('/invitations/availables').catch(err => console.log(err));
+    const allEvents = await request.data;
+    this.setState({ allEvents });
+  };
 
   getAvailablesEventsDatesJSON = async () => {
-    const request = await axios.get('/invitations/availables/dates')
-    const availablesEvents = await request.data
+    const request = await axios.get('/invitations/availables/dates');
+    const availablesEvents = await request.data;
 
     this.setState({
       availablesEvents,
       selectedEventOnEventsList: [],
       selectedEventOnEventsListId: '',
-    })
-  }
+    });
+  };
 
   selectEvent = item => {
     this.setState({
       selectedEventOnEventsList: [item],
       selectedEventOnEventsListId: item._id,
-    })
-  }
+    });
+  };
 
   removeEvent = async id => {
-    await axios.get(`/invitations/delete/${id}`).catch(err => console.log(err))
-    await this.getAvailablesEvents()
-    await this.getAvailablesEventsDatesJSON()
-    await this.resetSelectedEvent()
-  }
+    await axios.get(`/invitations/delete/${id}`).catch(err => console.log(err));
+    await this.getAvailablesEvents();
+    await this.getAvailablesEventsDatesJSON();
+    await this.resetSelectedEvent();
+  };
 
   resetSelectedEvent = () => {
     this.setState({
       endDates: [],
       selectedEventOnEventsListId: '',
       startDates: [],
-    })
-  }
+    });
+  };
 
   toggleEventCheckToTrue = () => {
     axios
-      .get(
-        `/invitations/toggleEventCheckToTrue/${
-          this.state.selectedEventOnEventsListId
-        }`
-      )
+      .get(`/invitations/toggleEventCheckToTrue/${this.state.selectedEventOnEventsListId}`)
       .then(res => console.log(res.data))
-      .catch(err => console.log(err))
-  }
+      .catch(err => console.log(err));
+  };
 
   addNewDatesInCalendar = async (eventTitle, history) => {
-    const { endDates, selectedEventOnEventsListId, startDates } = this.state
-    const params = new URLSearchParams()
-    params.append('title', eventTitle)
-    params.append('startDates', startDates)
-    params.append('endDates', endDates)
-    params.append('invitationId', selectedEventOnEventsListId)
+    const { endDates, selectedEventOnEventsListId, startDates } = this.state;
+    const params = new URLSearchParams();
+    params.append('title', eventTitle);
+    params.append('startDates', startDates);
+    params.append('endDates', endDates);
+    params.append('invitationId', selectedEventOnEventsListId);
 
     await axios({
       method: 'post',
       url: '/calendar/add',
       data: params,
-    }).catch(err => console.log(err))
+    }).catch(err => console.log(err));
 
-    history.push('/calendrier')
-    await this.toggleEventCheckToTrue()
-    await this.resetSelectedEvent()
-  }
+    history.push('/calendrier');
+    await this.toggleEventCheckToTrue();
+    await this.resetSelectedEvent();
+  };
 
   filterDatesBeforeAddInCalendar = () => {
-    const filteredDates = this.state.selectedEventOnEventsList.map(item =>
-      item.dates.split(',')
-    )
+    const filteredDates = this.state.selectedEventOnEventsList.map(item => item.dates.split(','));
 
-    const startDates = []
-    const endDates = []
+    const startDates = [];
+    const endDates = [];
 
     filteredDates.forEach((fullDate, i) => {
       fullDate.forEach(date => {
-        startDates.push(date.split('-')[0])
-        endDates.push(date.split('-')[1])
-      })
-    })
+        startDates.push(date.split('-')[0]);
+        endDates.push(date.split('-')[1]);
+      });
+    });
 
-    this.setState({ startDates, endDates })
-  }
+    this.setState({ startDates, endDates });
+  };
 
   handleAddNewDatesInCalendarSubmit = async (e, eventTitle, history) => {
-    e.preventDefault()
-    await this.filterDatesBeforeAddInCalendar()
-    await this.addNewDatesInCalendar(eventTitle, history)
-  }
+    e.preventDefault();
+    await this.filterDatesBeforeAddInCalendar();
+    await this.addNewDatesInCalendar(eventTitle, history);
+  };
 
   openCalendarModal = () => {
-    this.setState({ isCalendarModalOpen: true })
-  }
+    this.setState({ isCalendarModalOpen: true });
+  };
 
   closeCalendarModal = () => {
-    this.setState({ isCalendarModalOpen: false })
-  }
+    this.setState({ isCalendarModalOpen: false });
+  };
 
   handleClickOnEventOnCalendar = async selectedEvent => {
-    const { _id, invitationId, title } = selectedEvent
-    let request
-    let selectedEventOnCalendarType
+    const { _id, invitationId, title } = selectedEvent;
+    let request;
+    let selectedEventOnCalendarType;
 
     // ? IF === Si c'est des dates séléctionnées depuis l'interface (les custom event n'ont pas d'invitationId)
     if (invitationId) {
-      selectedEventOnCalendarType = 'invitation'
-      request = await axios.get(`/calendar/cardsByInvitationId/${invitationId}`)
+      selectedEventOnCalendarType = 'invitation';
+      request = await axios.get(`/calendar/cardsByInvitationId/${invitationId}`);
     } else {
       // ? ELSE === Si c'est des dates créées depuis l'interface admin
-      selectedEventOnCalendarType = 'customEvent'
-      request = await axios.get(`/calendar/cardById/${_id}`)
+      selectedEventOnCalendarType = 'customEvent';
+      request = await axios.get(`/calendar/cardById/${_id}`);
     }
 
-    const selectedEventOnCalendar = await request.data
+    const selectedEventOnCalendar = await request.data;
 
     this.setState({
       selectedEventOnCalendarType,
       selectedEventOnCalendar,
       selectedEventOnCalendarTitle: title,
-    })
-  }
+    });
+  };
 
   toggleModalLoading = boolean => {
-    this.setState({ modalLoading: boolean })
-  }
+    this.setState({ modalLoading: boolean });
+  };
 
   toggleAppLoading = boolean => {
-    this.setState({ appLoading: boolean })
-  }
+    this.setState({ appLoading: boolean });
+  };
 
   render() {
     const {
@@ -176,7 +166,7 @@ export class MyProvider extends Component {
       selectedEventOnCalendar,
       selectedEventOnCalendarTitle,
       selectedEventOnCalendarType,
-    } = this.state
+    } = this.state;
     return (
       <Provider
         value={{
@@ -206,8 +196,7 @@ export class MyProvider extends Component {
             selectEvent: this.selectEvent,
             openCalendarModal: this.openCalendarModal,
             handleClickOnEventOnCalendar: this.handleClickOnEventOnCalendar,
-            handleAddNewDatesInCalendarSubmit: this
-              .handleAddNewDatesInCalendarSubmit,
+            handleAddNewDatesInCalendarSubmit: this.handleAddNewDatesInCalendarSubmit,
             resetSelectedEvent: this.resetSelectedEvent,
             toggleAppLoading: this.toggleAppLoading,
             toggleModalLoading: this.toggleModalLoading,
@@ -216,6 +205,6 @@ export class MyProvider extends Component {
       >
         {this.props.children}
       </Provider>
-    )
+    );
   }
 }

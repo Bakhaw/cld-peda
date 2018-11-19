@@ -1,18 +1,18 @@
-import React, { Component, Fragment } from 'react'
-import axios from 'axios'
-import moment from 'moment'
-import BigCalendar from 'react-big-calendar'
+import React, { Component, Fragment } from 'react';
+import axios from 'axios';
+import moment from 'moment';
+import BigCalendar from 'react-big-calendar';
 
-import EventInfosModal from './EventInfosModal'
-import Loader from '../Loader'
+import EventInfosModal from './EventInfosModal';
+import Loader from '../Loader';
 
-import { withContext } from '../../context/AppStateProvider'
+import { withContext } from '../../context/AppStateProvider';
 
-import 'react-big-calendar/lib/css/react-big-calendar.css'
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 class Calendar extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       messages: {
         // ? modifie les keys par leur valeur, ex: month devient Mois, dans l'affichage du Calendrier
@@ -24,44 +24,40 @@ class Calendar extends Component {
         next: '>',
       },
       calendarCards: [],
-    }
-    this.localizer = BigCalendar.momentLocalizer(moment)
+    };
+    this.localizer = BigCalendar.momentLocalizer(moment);
   }
 
   async componentDidMount() {
-    const { toggleAppLoading } = this.props.actions
+    const { toggleAppLoading } = this.props.actions;
 
-    toggleAppLoading(true)
-    await this.getAllCalendarCards()
-    toggleAppLoading(false)
+    toggleAppLoading(true);
+    await this.getAllCalendarCards();
+    toggleAppLoading(false);
   }
 
   getAllCalendarCards = async () => {
-    const request = await axios.get('/calendar')
-    const calendarCards = await request.data
+    const request = await axios.get('/calendar');
+    const calendarCards = await request.data;
 
-    this.setState({ calendarCards })
-  }
+    this.setState({ calendarCards });
+  };
 
   openCalendarModal = async e => {
-    const {
-      handleClickOnEventOnCalendar,
-      openCalendarModal,
-      toggleModalLoading,
-    } = this.props.actions
-    toggleModalLoading(true)
-    openCalendarModal()
-    await handleClickOnEventOnCalendar(e)
-    toggleModalLoading(false)
-  }
+    const { handleClickOnEventOnCalendar, openCalendarModal, toggleModalLoading } = this.props.actions;
+    toggleModalLoading(true);
+    openCalendarModal();
+    await handleClickOnEventOnCalendar(e);
+    toggleModalLoading(false);
+  };
 
   render() {
-    const { calendarCards, messages } = this.state
-    const { contextState } = this.props
+    const { calendarCards, messages } = this.state;
+    const { contextState } = this.props;
 
-    const { appLoading } = contextState
+    const { appLoading } = contextState;
 
-    if (appLoading) return <Loader />
+    if (appLoading) return <Loader />;
 
     return (
       <Fragment>
@@ -79,8 +75,8 @@ class Calendar extends Component {
 
         <EventInfosModal getAllCalendarCards={this.getAllCalendarCards} />
       </Fragment>
-    )
+    );
   }
 }
 
-export default withContext(Calendar)
+export default withContext(Calendar);

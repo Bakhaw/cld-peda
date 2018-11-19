@@ -1,9 +1,9 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 
 function UserForm({ handleChangeInput, handleFormSubmit, lastname, name }) {
   return (
@@ -30,14 +30,7 @@ function UserForm({ handleChangeInput, handleFormSubmit, lastname, name }) {
         value={name.value}
         variant="outlined"
       />
-      <Button
-        className="submit-button"
-        color="primary"
-        onClick={handleFormSubmit}
-        size="large"
-        type="submit"
-        variant="extendedFab"
-      >
+      <Button className="submit-button" color="primary" onClick={handleFormSubmit} size="large" type="submit" variant="extendedFab">
         Valider
       </Button>
 
@@ -47,7 +40,7 @@ function UserForm({ handleChangeInput, handleFormSubmit, lastname, name }) {
         </Button>
       </Link>
     </div>
-  )
+  );
 }
 
-export default UserForm
+export default UserForm;

@@ -1,8 +1,8 @@
 // import moment from 'moment';
 
 const createDate = date => {
-  return moment(date, 'MM/DD/YYYY').format('MM/DD/YYYY')
-}
+  return moment(date, 'MM/DD/YYYY').format('MM/DD/YYYY');
+};
 
 const events = [
   {
@@ -20,4 +20,4 @@ const events = [
     start: '04/22/2019',
     end: '04/27/2019',
   },
-]
+];
