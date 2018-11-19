@@ -1,4 +1,4 @@
-const HtmlWebPackPlugin = require("html-webpack-plugin");
+const HtmlWebPackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   module: {
@@ -7,27 +7,31 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
-        }
+          loader: 'babel-loader',
+        },
       },
       {
         test: /\.html$/,
         use: [
           {
-            loader: "html-loader",
-            options: { minimize: true }
-          }
-        ]
+            loader: 'html-loader',
+            options: { minimize: true },
+          },
+        ],
       },
       {
         test: /\.(css|scss)$/,
-        use: [{
-            loader: "style-loader" // creates style nodes from JS strings
-        }, {
-            loader: "css-loader" // translates CSS into CommonJS
-        }, {
-            loader: "sass-loader" // compiles Sass to CSS
-        }]
+        use: [
+          {
+            loader: 'style-loader', // creates style nodes from JS strings
+          },
+          {
+            loader: 'css-loader', // translates CSS into CommonJS
+          },
+          {
+            loader: 'sass-loader', // compiles Sass to CSS
+          },
+        ],
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,
@@ -40,20 +44,22 @@ module.exports = {
             },
           },
         ],
-      }
-    ]
+      },
+    ],
   },
   devServer: {
     historyApiFallback: true,
-    proxy: [{
-      path: ['/invitations', '/calendar'],
-      target: 'http://localhost:8090'
-    }]
+    proxy: [
+      {
+        path: ['/invitations', '/calendar'],
+        target: 'http://localhost:8090',
+      },
+    ],
   },
   plugins: [
     new HtmlWebPackPlugin({
-      template: "./src/index.html",
-      filename: "./index.html"
-    })
-  ]
-};
+      template: './src/index.html',
+      filename: './index.html',
+    }),
+  ],
+}
