@@ -1,50 +1,50 @@
-import React, { Component, Fragment } from 'react'
-import moment from 'moment'
+import React, { Component, Fragment } from "react";
+import moment from "moment";
 
-import Button from '@material-ui/core/Button'
-import CalendarIcon from '@material-ui/icons/CalendarToday'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
+import Button from "@material-ui/core/Button";
+import CalendarIcon from "@material-ui/icons/CalendarToday";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 
-import Loader from '../Loader'
-import EditEventModal from './EditEventModal'
-import RemoveEventAlertModal from './RemoveEventAlertModal'
+import Loader from "../Loader";
+import EditEventModal from "./EditEventModal";
+import RemoveEventAlertModal from "./RemoveEventAlertModal";
 
-import { withContext } from '../../context/AppStateProvider'
+import { withContext } from "../../context/AppStateProvider";
 
 class Events extends Component {
   state = {
-    isRemoveEventAlertModalOpen: false,
-  }
+    isRemoveEventAlertModalOpen: false
+  };
 
   openRemoveEventAlertModal = () => {
-    this.setState({ isRemoveEventAlertModalOpen: true })
-  }
+    this.setState({ isRemoveEventAlertModalOpen: true });
+  };
 
   closeRemoveEventAlertModal = () => {
-    this.setState({ isRemoveEventAlertModalOpen: false })
-  }
+    this.setState({ isRemoveEventAlertModalOpen: false });
+  };
 
   render() {
-    const { actions, contextState, eventTitle, history, isAdmin } = this.props
+    const { actions, contextState, eventTitle, history, isAdmin } = this.props;
     const {
       allEvents,
       appLoading,
       availablesEvents,
-      selectedEventOnEventsListId,
-    } = contextState
-    const { handleAddNewDatesInCalendarSubmit, selectEvent } = actions
+      selectedEventOnEventsListId
+    } = contextState;
+    const { handleAddNewDatesInCalendarSubmit, selectEvent } = actions;
 
-    if (appLoading) return <Loader />
+    if (appLoading) return <Loader />;
 
     return (
       <Fragment>
         <List className="invitations-list-container">
           {availablesEvents.length > 0 &&
             allEvents.map((item, i) => {
-              const eventDates = availablesEvents[i].dates
+              const eventDates = availablesEvents[i].dates;
               return (
                 <ListItem
                   button
@@ -58,31 +58,30 @@ class Events extends Component {
                   <div className="invitation-content">
                     <ListItemText inset>
                       {eventDates.map((date, j) => {
-                        const startDate = moment(date.start, 'DD/MM/YYYY')
-                          .locale('fr')
-                          .format('D MMMM YYYY')
-                        const endDate = moment(date.end, 'DD/MM/YYYY')
-                          .locale('fr')
-                          .format('D MMMM YYYY')
+                        const startDate = moment(date.start, "DD/MM/YYYY")
+                          .locale("fr")
+                          .format("D MMMM YYYY");
+                        const endDate = moment(date.end, "DD/MM/YYYY")
+                          .locale("fr")
+                          .format("D MMMM YYYY");
                         return (
                           <p key={j}>
-                            {startDate}{' '}
+                            {startDate}{" "}
                             {startDate !== endDate && `- ${endDate}`}
                           </p>
-                        )
+                        );
                       })}
                     </ListItemText>
 
                     {isAdmin && (
                       <div className="admin-action-buttons">
                         <EditEventModal item={item} />
-
                         <RemoveEventAlertModal item={item} />
                       </div>
                     )}
                   </div>
                 </ListItem>
-              )
+              );
             })}
         </List>
 
@@ -91,7 +90,7 @@ class Events extends Component {
             <Button
               className="submit-button"
               color="primary"
-              disabled={selectedEventOnEventsListId === ''}
+              disabled={selectedEventOnEventsListId === ""}
               onClick={e =>
                 handleAddNewDatesInCalendarSubmit(e, eventTitle, history)
               }
@@ -104,8 +103,8 @@ class Events extends Component {
           </div>
         )}
       </Fragment>
-    )
+    );
   }
 }
 
-export default withContext(Events)
+export default withContext(Events);

@@ -5,6 +5,7 @@
   min-height: $mainInterfaceHeight; // 10vh navbar
   width: $invitationsInterfaceWidth;
   margin: 0 auto;
+  text-align: center;
   h1 {
     margin-top: 20px;
     font-size: $titleFontSize;
@@ -17,7 +18,7 @@
     width: 100%;
   }
   @include md {
-    width: 100%;    
+    width: 100%;
   }
 }
 
@@ -37,7 +38,21 @@
   }
 }
 
-.admin-create-invitations {
-  text-align: center;
-  width: 100%;
+.create-invitation {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  h1 {
+    width: 100vw;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    button {
+      width: 100%;
+    }
+  }
 }

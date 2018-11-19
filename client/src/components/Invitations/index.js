@@ -1,33 +1,33 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment } from "react";
 
-import CreateInvitation from '../CreateInvitation'
-import Events from './Events'
-import Loader from '../Loader'
+import CreateInvitation from "../CreateInvitation";
+import Events from "./Events";
+import Loader from "../Loader";
 
-import { withContext } from '../../context/AppStateProvider'
+import { withContext } from "../../context/AppStateProvider";
 
 class Invitation extends Component {
   async componentDidMount() {
     const {
       getAvailablesEvents,
       getAvailablesEventsDatesJSON,
-      toggleAppLoading,
-    } = this.props.actions
-    toggleAppLoading(true)
-    await getAvailablesEvents()
-    await getAvailablesEventsDatesJSON()
-    toggleAppLoading(false)
+      toggleAppLoading
+    } = this.props.actions;
+    toggleAppLoading(true);
+    await getAvailablesEvents();
+    await getAvailablesEventsDatesJSON();
+    toggleAppLoading(false);
   }
 
   render() {
-    const { contextState, eventTitle, history, isAdmin } = this.props
-    const { appLoading, allEvents } = contextState
+    const { contextState, eventTitle, history, isAdmin } = this.props;
+    const { appLoading, allEvents } = contextState;
 
-    if (appLoading) return <Loader />
+    if (appLoading) return <Loader />;
 
     return (
       <Fragment>
-        {isAdmin && <CreateInvitation />}
+        {/* {isAdmin && <CreateInvitation />} */}
 
         {allEvents.length === 0 ? (
           <p>Il n'y à pas d'invitations disponibles</p>
@@ -35,8 +35,8 @@ class Invitation extends Component {
           <Events eventTitle={eventTitle} history={history} isAdmin={isAdmin} />
         )}
       </Fragment>
-    )
+    );
   }
 }
 
-export default withContext(Invitation)
+export default withContext(Invitation);
